@@ -10,7 +10,7 @@
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
-\usepackage{idrislang}
+\usepackage[styles]{idrislang}
 
 \newcommand\todo[1]{\textcolor{red}{#1}}
 \usepackage{newfloat}
@@ -45,6 +45,7 @@
 }
 
 \lstset{style=mystyle}
+\usepackage{svg}
 
 \begin{document}
 
@@ -161,10 +162,68 @@ overloading\cite{brady_12}.
 \section{First steps:\\Minimal Bit Growth for FIR Adder Chains}
 
 % Talk about direct form FIR filters with diagram
+As an introductory example, the consider a direct form Finite Impulse Response
+(FIR) filter shown in Figure \ref{fig:fir_direct}. All word lengths have been
+annotated, considering the worst-case for each arithmetic operation in
+isolation. 
+
+\begin{figure}
+  \centering
+  \includesvg{img/firworstcase}
+  \caption{A direct form FIR filter with worst-case growth along the adder chain}
+  \label{fig:fir_direct}
+\end{figure}
 
 % Zoom in on adder chain and talk about worst-case bit growth and how this is
 % usually a type-level function (different from dependent types!). For known
 % coefficients, we can do better here than worst-case growth.
+
+For this trivial example, the input is an 8-bit word, the coefficients are all
+5-bit words, and the adder chain produces a 16-bit output. For worst-case bit
+growth, the result of the multiplication of an $n$-bit word and an $m$-bit word
+is represented as an $[n+m]$-bit word, and the addition of an $n$-bit and an
+$m$-bit word is a $[Max(n,m)+1]$-bit word. This sort of growth can be captured
+by VHDL designs using generics and \texttt{for generate} statements. (Note that
+there is no type inference, however, so the word length of every intermediate
+signal must be explicitly defined.). As an introduction to Idris' syntax we
+present this worst-case bit growth for arithmetic functions in Listing
+\ref{lst:worst_arith}, where the type \texttt{Unsigned n} represents an unsigned
+integer of $n$ bits.
+
+\begin{codefig}[h]
+  \caption{Worst-case bit growth for simplified arithmetic functions}
+\begin{lstlisting}[language=idris]
+mul : Unsigned n -> Unsigned m -> Unsigned (n+m)
+mul a b = a * b
+
+add : Unsigned n -> Unsigned m
+   -> Unsigned (max n m + 1)
+add a b = a + b
+\end{lstlisting}
+\label{lst:worst_arith}
+\end{codefig}
+
+Each function has a type (after \texttt{:}), and definition (after \texttt{=}).
+For clarity, the type of the multiplication function, \texttt{mul}, should be
+read as ``a function accepting arguments of type \texttt{Unsigned n} and
+\texttt{Unsigned m}, and returns a value of type \texttt{Unsigned (n+m)}''.
+
+In the case of the FIR filter presented in Figure \ref{fig:fir_direct}, a circuit can be described with word lengths better than the worst-case for two reasons:
+
+\begin{enumerate}
+\item Each arithmetic operation is considered in isolation but repeated
+  additions will accumulate any quantisation effects when the true range of a
+  number does not align with power of 2 limits. For example, $y$ in Figure
+  \ref{fig:fir_direct} will only inhabit values within the range $0$ --
+  ($2^{14}-1$), despite its 16-bit annotation.
+\item Often the coefficients, $w_n$, will be constant. In this case the bit
+  growth due to multiplication should vary with the numerical value of each
+  constant coefficient.
+\end{enumerate}
+
+Improvement 2) is particularly relevant here, as its solution clearly demands a
+language with dependent types --- a term-level value (a coefficient) must be
+used to compute a type (the output wordlength).
 
 % Let's try! Instead of tracking bits, we track the exact range that a signal
 % can inhabit. This can be reduced back to an n-bit number using the Rep type
@@ -172,8 +231,70 @@ overloading\cite{brady_12}.
 % of dependent types! Value is lifted up to the type level and we do
 % calculations with it.
 
+Now consider how Idris can be applied to these challenges. Both improvements are
+facilitated by types that track the integer range each signal can inhabit,
+rather than immediately rounding to the number of bits required (i.e. $\lceil
+log_2(range) \rceil$). Our implementation of this is the \texttt{Bounded} type,
+where a number of type \texttt{Bounded n} is in the closed interval $[\![0,n]\!]$
+(i.e. any value between 0 and $n$, inclusive). Such a type can implement the
+\texttt{Rep} type class in order to maintain a known binary representation,
+required for ciruit synthesis.
+
+Listing \ref{lst:better_arith} shows two arithmetic functions on
+\texttt{Bounded} that help ensure minimum bit growth for the FIR filter example
+--- \texttt{mulConst} to multiply a \texttt{Bounded} with a constant, and
+\texttt{add} to add two \texttt{Bounded} arguments.
+
+\begin{codefig}[h]
+  \caption{Minimum bit growth for simplified arithmetic functions}
+\begin{lstlisting}[language=idris]
+mulConst : Bounded n -> (m: Nat) -> Bounded (n*m)
+mulConst (B x n) m = B (x*m) (n*m)
+
+add : Bounded n -> Bounded m -> Bounded (n+m)
+add (B x n) (B y m) = B (x+y) (n+m)
+\end{lstlisting}
+\label{lst:better_arith}
+\end{codefig}
+
+Paying particular attention to \texttt{mulConst}'s use of dependent types (the
+\emph{type} of the output depends on the \emph{value} of an argument), a full
+FIR filter circuit can be constructed using these arithmetic functions. At its
+core, an FIR is a dot product of $n$ coefficients ($w$) and the last $n$ samples
+of a discrete time signal ($x$).
+
+\begin{equation}
+  y_{[k]} = \sum_{k=1}^{n} w_k \cdot x_{[n-k]}
+\label{eqn:fir}
+\end{equation}
+
+To construct the type for the dot product's output, consider the minimum closed
+intervals that can represent each term in Equation \ref{eqn:fir}. As the range of $x_[n]$ is constant for all $n$, it can be taken out as a factor: 
+
+\begin{equation}
+  y_{[k]} = x\sum_{k=1}^{n} w_k
+\label{eqn:fir}
+\end{equation}
+
+TODO find a symbol for the closed set of $a$.
+
 % Now we can continue and build this into an entire FIR structure. Look at types
 % first. See how much of the implementation I can include without being scary...
+
+% TODO should I rewrite this with `Vect`s?
+\begin{codefig}[h]
+  \caption{Minimum bit growth for simplified arithmetic functions}
+\begin{lstlisting}[language=idris]
+dotProd : (ws : List Nat)
+       -> List (Bounded n)
+       -> Bounded (n * sum ws)
+dotProd [] x = zeros
+dotProd {n} (w :: ws) (x :: xs) =
+  let result = add (multConst x w) (firCycle ws xs)
+  in rewrite firProof n w ws in result
+\end{lstlisting}
+\label{lst:dot_prod}
+\end{codefig}
 
 % OK, why is this better then?
 
