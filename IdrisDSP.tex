@@ -1,0 +1,268 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\usepackage{idrislang}
+
+\newcommand\todo[1]{\textcolor{red}{#1}}
+\usepackage{newfloat}
+\DeclareFloatingEnvironment[name={Listing}]{codefig}
+\usepackage{xcolor}
+%\usepackage{caption}
+\usepackage{listings}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    %backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    frame=lines,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\begin{document}
+
+\title{On Applications of Dependent Types to Parameterised Digital Signal
+  Processing Circuits \\
+\thanks{Funded under EPSRC grant no. EP/N509760/1} }
+
+\author{\IEEEauthorblockN{Craig Ramsay}
+\IEEEauthorblockA{\textit{Software Defined Radio Laboratory} \\
+\textit{University of Strathclyde}\\
+Glasgow, Scotland \\
+\href{craig.ramsay.100@strath.ac.uk}}
+\and
+\IEEEauthorblockN{Louise H. Crockett}
+\IEEEauthorblockA{\textit{Software Defined Radio Laboratory} \\
+\textit{University of Strathclyde}\\
+Glasgow, Scotland \\
+louise.crockett@strath.ac.uk}
+\and
+\IEEEauthorblockN{Robert W. Stewart}
+\IEEEauthorblockA{\textit{Software Defined Radio Laboratory} \\
+\textit{University of Strathclyde}\\
+Glasgow, Scotland \\
+r.stewart@strath.ac.uk}
+}
+
+\maketitle
+
+\begin{abstract}
+  We'll introduce Idris for EEE folks and show where there's a dependently typed
+  hole in most hardware description languages, and what sort of signal
+  processing circuits we can construct if we had such a language feature.
+\end{abstract}
+
+\begin{IEEEkeywords}
+dependent types, functional programming, Idris, digital signal processing, field programmable gate arrays  
+\end{IEEEkeywords}
+
+\section{Introduction}
+
+Introducing some stuff! \cite{dempster_mag}
+
+\section{A Primer on Dependent Types and Functional Programming in Idris}
+
+\section{Modelling synchronous circuits in Idris}
+
+In order to model simple circuit behaviour in Idris, a few choices must be considered. Namely,
+\begin{enumerate}
+\item \emph{How to best represent numeric types} --- \\A raw collection of bits, or
+  native integers? How should binary wordlengths be encoded in the types?
+\item \emph{How to best model synchronous logic} --- \\Potentially infinite lists of
+  descrete-time samples? How do we ensure causality is preserved? Should
+  multiple clock domains be supported?
+\end{enumerate}
+
+An intuative solution to choice 1) is to expose only a type representing a
+single bit (an equivalent of VHDL's \texttt{std\_logic} type) and let the
+designer create their own abstractions on top of this, introducing any number of
+different arithmetic semantics and representations (unsigned, signed,
+fixed-point, binary-coded decimal, for example). In a slightly more idomatic
+approach, we opt for the use of a type class for these bit-representable types
+(much like the \texttt{Rep} type class used in Kansas Lava\cite{gill_13}). This
+provides a formal interface that defines what a type must implement in order to
+be bit-representable. An instance of this type class can be written for any
+custom type or, importantly, any existing Idris type. The reuse of existing
+types is a benefit over simply constructing new data types as collections of
+bits directly.
+
+Choice 2) introduces a substantial level of complexity when considering circuit
+synthesis --- but much of this can be side-stepped when performing simulation
+alone. One long-standing method of modelling synchonous signals is to use
+infinite streams where the $k^{th}$ element represents the discrete-time sample
+that is stable during the $k^{th}$ clock cycle. This technique can be seen in
+various forms in the languages $\mu$FP\cite{ufp}, Kansas Lavas\cite{gill_09},
+and C$\lambda$aSH\cite{baaij_15}.
+
+The host language must, generally, have support for lazy evaluation for
+definitions of these infinite stream structures. While Idris uses eagar
+evaluation by default (unlike Haskell, the host language of
+\cite{gill_09,baaij_15}), lazy evaluation is still supported when operating on
+explicitly ``lazy'' types.
+
+A final nuance is that it is possible to describe a variety of non-synthesizable
+circuits using streams directly. For example:
+
+\begin{itemize}
+\item Dropping an element from the stream describes a time advance, and is
+  non-causal
+\begin{lstlisting}[language=idris]
+adv : Stream a -> Stream a
+adv x :: xs = xs
+\end{lstlisting}
+      
+\item Some recursive uses of streams would infer circuits with infinite memory
+  elements\cite{baaij_15}
+\begin{lstlisting}[language=idris]
+elephant : a -> Stream a -> Stream a
+elephant i (x :: xs) = i :: x :: elephant i xs
+\end{lstlisting}
+\end{itemize}
+
+These non-synthesizable descriptions can be precluded by hiding the Stream
+implementation and only exposing safe, hardware-friendly functions that operate
+on these streams --- such as \texttt{delay}, and an functor interface.
+
+Before considering how Idris' dependent types enhance DSP circuit models, it is
+worth reiterating that, at the time of writing, this environment only simulates
+synchronous circuit behaviour and \emph{does not} synthesize circuits as VHDL or
+verilog descriptions. However, circuit synthesis is a promising avenue for
+future work given Idris' support for hosting EDSLs, even with their own syntax
+overloading\cite{brady_12}.
+
+
+\section{First steps:\\Minimal Bit Growth for FIR Adder Chains}
+
+% Talk about direct form FIR filters with diagram
+
+% Zoom in on adder chain and talk about worst-case bit growth and how this is
+% usually a type-level function (different from dependent types!). For known
+% coefficients, we can do better here than worst-case growth.
+
+% Let's try! Instead of tracking bits, we track the exact range that a signal
+% can inhabit. This can be reduced back to an n-bit number using the Rep type
+% class. Look at how we do arithmetic with a constant now... this is an example
+% of dependent types! Value is lifted up to the type level and we do
+% calculations with it.
+
+% Now we can continue and build this into an entire FIR structure. Look at types
+% first. See how much of the implementation I can include without being scary...
+
+% OK, why is this better then?
+
+% VS VHDL & verilog, there is now an implementation that has minimal bit
+% growth. Depending on EDA tools, maybe this does get optimised away to match
+% out implementation, but think about the design process. We would use this
+% filter as one part of a larger DSP chain. After this filter, it's likely we'd
+% want resize to keep the wordlengths managable. We either truncate, 100%
+% losing precision, or we'd write the weights down and do the exact calculation
+% we've just told the Idris compiler to do to find out how many MSBs will be
+% uninhabited. Doh. This is quite a clear advantage. We can also use this implementation to reason about circuit resource cost and how this varies with parameter changes without going through Vivado!
+
+% VS other Haskell HDLs: we would need to make word lengths a term-level thing,
+% and we'd get no checking from the compiler. Closest is Lava. Can nearly get
+% there. Haskell doesn't really have dependent types but we can use singletons.
+% We'd be able to implement the same sort of arithmetic stage as seen in Fig
+% XX, but when we come to writing the full FIR filter, we need collections of
+% singletons and then this gets super messy. Clash has a similar problem with
+% collections of singletons because we don't have general recursion -- just a
+% fold. So, we need to hold collections of type-level weights. Eugh. Could do
+% some risky type level stuff, but that's blergh.
+% If we do keep this bit growth at a type level in Idris, then we 
+%\begin{enumerate}
+%\item compiler verification that we have implemented what we set out to implement (we've got the right word-lengths at each stage), or...
+%\item conversely, we can let our implementation be type-directed. At each stage,
+%  we infer new wordlengths (or similar) purely by what the types say should
+%  happen.
+%\item nice environment to reason about circuit resource costs and how they are
+%  linked to the parameters... without running through Vivado.
+%\end{enumerate}
+
+\section{Going further:\\Lossless Pruning in CIC Interpolators/Decimators}
+
+This *might* be possible with singletons and type-level functions in Haskell,
+but it would be extremely, extremely painful. With Idris/dependent types, we use
+the same language for expressions at both the type and term level, so it's
+actually OK!
+
+\section{Pie in the sky}
+
+Make this short and sweet. Doesn't just have to be wordlengths!
+MCM circuits using dependent types to prove that they implement the coefficients
+supplied by adder chains. An idris(2?) compiler for hardware, rather than an
+EDSL, so we can reuse any libraries.
+
+\begin{codefig}[h]
+  \caption{firs yo}
+\begin{lstlisting}[language=idris]
+window : Nat -> Stream a -> Stream (List a)
+window k xs = take k xs :: window k (tail xs) 
+
+firCycle :  (ws : List Nat)
+         -> List (UBounded n)
+         -> UBounded (n * sum ws)
+firCycle     []         x        = zeros
+firCycle {n} (w :: ws) (x :: xs) =
+  let result = addUB (constMultUB x w)
+                     (firCycle ws xs)
+  in rewrite firProof n w ws in result
+
+fir :  (ws : List Nat)
+    -> Stream (UBounded n)
+    -> Stream (UBounded (n * sum ws))
+fir {n} ws x = map (firCycle ws)
+                   (window (length ws) x)
+\end{lstlisting}
+\begin{lstlisting}[style=stdout]
+*views> :p views.parity_lemma_1 
+
+---------------------------------- (views.parity_lemma_1) --------
+{hole0} : (j : Nat) -> (Parity (plus (S j) (S j))) -> Parity (S (S (plus j j)))
+
+-views.parity_lemma_1>  
+\end{lstlisting}
+\label{code:step}
+\end{codefig}
+
+\section*{Acknowledgment}
+
+The authors would like to thank Xilinx for supplying hardware and EDA tools for
+this project. We would like to extend our appreciation to our colleagues at
+Strathclyde, including Dr. Douglas Allan, Joshua Goldsmith, Andrew Maclellan,
+and Marius Šiaučiulis, who have provided useful feedback during the
+implementation of this project.
+
+Finally, we acknowledge funding for Craig Ramsay under EPSRC grant no.
+EP/N509760/1.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references} 
+
+\end{document}
