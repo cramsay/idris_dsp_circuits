@@ -1,6 +1,7 @@
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
-% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+% The preceding line is only needed to identify funding in the first footnote.
+% If that is unneeded, please comment it out.
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
@@ -91,10 +92,10 @@ things like perl to generate vhdl in an unsafe way for ages. The essence of this
 technique has been continued with more feature rich HDLs, including those
 embedded in Haskell. These languages still rely on the execution of the
 designer's software program to generate hardware --- meaning structure and
-wordlengths will be evaluated only when the program is called with a specific
-set of arguments. Testing is still a big burden here. It's also hard to guage
+word lengths will be evaluated only when the program is called with a specific
+set of arguments. Testing is still a big burden here. It's also hard to gauge
 how well tested a 3rd party IP is... What if we could describe our circuits in
-such a way so the compiler can check the circuit structure and wordlengths, even
+such a way so the compiler can check the circuit structure and word lengths, even
 when these change in non-trivial ways with changes to the parameters?
 
 Dependent types can do this! What are those? Idris is a good shout.
@@ -104,40 +105,40 @@ Dependent types can do this! What are those? Idris is a good shout.
 In order to model simple circuit behaviour in Idris, a few choices must be considered. Namely,
 \begin{enumerate}
 \item \emph{How to best represent numeric types} --- \\A raw collection of bits, or
-  native integers? How should binary wordlengths be encoded in the types?
+  native integers? How should binary word lengths be encoded in the types?
 \item \emph{How to best model synchronous logic} --- \\Potentially infinite lists of
-  descrete-time samples? How do we ensure causality is preserved? Should
+  discrete-time samples? How do we ensure causality is preserved? Should
   multiple clock domains be supported?
 \end{enumerate}
 
-An intuative solution to choice 1) is to expose only a type representing a
+An intuitive solution to choice 1) is to expose only a type representing a
 single bit (an equivalent of VHDL's \texttt{std\_logic} type) and let the
 designer create their own abstractions on top of this, introducing any number of
 different arithmetic semantics and representations (unsigned, signed,
-fixed-point, binary-coded decimal, for example). In a slightly more idomatic
+fixed-point, binary-coded decimal, for example). In a slightly more idiomatic
 approach, we opt for the use of a type class for these bit-representable types
 (much like the \texttt{Rep} type class used in Kansas Lava\cite{gill_13}). This
 provides a formal interface that defines what a type must implement in order to
-be bit-representable. An instance of this type class can be written for any
+be bit-presentable. An instance of this type class can be written for any
 custom type or, importantly, any existing Idris type. The reuse of existing
 types is a benefit over simply constructing new data types as collections of
 bits directly.
 
 Choice 2) introduces a substantial level of complexity when considering circuit
 synthesis --- but much of this can be side-stepped when performing simulation
-alone. One long-standing method of modelling synchonous signals is to use
+alone. One long-standing method of modelling synchronous signals is to use
 infinite streams where the $k^{th}$ element represents the discrete-time sample
 that is stable during the $k^{th}$ clock cycle. This technique can be seen in
 various forms in the languages $\mu$FP\cite{ufp}, Kansas Lavas\cite{gill_09},
 and C$\lambda$aSH\cite{baaij_15}.
 
 The host language must, generally, have support for lazy evaluation for
-definitions of these infinite stream structures. While Idris uses eagar
+definitions of these infinite stream structures. While Idris uses eager
 evaluation by default (unlike Haskell, the host language of
 \cite{gill_09,baaij_15}), lazy evaluation is still supported when operating on
 explicitly ``lazy'' types.
 
-A final nuance is that it is possible to describe a variety of non-synthesizable
+A final nuance is that it is possible to describe a variety of non-synthesisable
 circuits using streams directly. For example:
 
 \begin{itemize}
@@ -156,14 +157,14 @@ elephant i (x :: xs) = i :: x :: elephant i xs
 \end{lstlisting}
 \end{itemize}
 
-These non-synthesizable descriptions can be precluded by hiding the Stream
+These non-synthesisable descriptions can be precluded by hiding the Stream
 implementation and only exposing safe, hardware-friendly functions that operate
 on these streams --- such as \texttt{delay}, and an functor interface.
 
 Before considering how Idris' dependent types enhance DSP circuit models, it is
 worth reiterating that, at the time of writing, this environment only simulates
-synchronous circuit behaviour and \emph{does not} synthesize circuits as VHDL or
-verilog descriptions. However, circuit synthesis is a promising avenue for
+synchronous circuit behaviour and \emph{does not} synthesise circuits as VHDL or
+Verilog descriptions. However, circuit synthesis is a promising avenue for
 future work given Idris' support for hosting EDSLs, even with their own syntax
 overloading\cite{brady_12}.
 
@@ -251,7 +252,7 @@ required (i.e. $\lceil log_2(range) \rceil$). Our implementation of this is the
 \texttt{Bounded} type, where a number of type \texttt{Bounded n} is in the
 closed interval $[\![0,n]\!]$ (i.e. any value between 0 and $n$, inclusive).
 Such a type can implement the \texttt{Rep} type class in order to maintain a
-known binary representation, required for ciruit synthesis.
+known binary representation, required for circuit synthesis.
 
 Listing \ref{lst:better_arith} shows two arithmetic functions on
 \texttt{Bounded} that help ensure minimum bit growth for the FIR filter example
@@ -326,7 +327,7 @@ Notice that line 7 includes a ``rewrite'' rule that seems extraneous to the
 model of the circuit. This acts as a small proof for the Idris compiler,
 demonstrating that the implementation does agree with the type we described. The
 type of the dot product is defined as in Equation \ref{eqn:fir_mag}, but the
-recusive implementation actually describes something with the following type:
+recursive implementation actually describes something with the following type:
 
 \begin{equation}
 |y| = |x\cdot w_i|+|x|\sum_{k=i+1}^{n} |w_k|
@@ -342,7 +343,7 @@ lengths/ranges are tracked in the types used in this implementation, the
 compiler ensures that our circuit implements the minimal growth at each
 arithmetic stage as defined by our specification in Equation \ref{eqn:fir_mag}.
 If an implementation does not meet this specification for any single combination
-of parameters, this will be caught and manifest as a compliler error.
+of parameters, this will be caught and manifest as a compiler error.
 
 % OK, why is this better then?
 
@@ -385,7 +386,7 @@ usage. In this case, the designer employ multiple strategies:
 \end{itemize}
 
 The second option is appealing as it can reduce word lengths without loss in
-precision, but it requries extra effort (for each coeffient set!) just to
+precision, but it requires extra effort (for each coefficient set!) just to
 emulate a guarantee that is provided statically in our Idris implementation.
 Beyond this, breaking the reliance on synthesis tools allows the designer to
 reason about resource usages from the source descriptions alone --- including
@@ -412,7 +413,7 @@ how resource usage mathematically relates to the choice of any input parameters.
 
 There are also clear benefits above other modern functional HDLs. The closest
 comparison is with the family of HDLs embedded in Haskell, called
-Lava\cite{gill_09}. In Lava, a similar circuit can be described using dynamicly
+Lava\cite{gill_09}. In Lava, a similar circuit can be described using dynamically
 sized lists of bits to represent each word. It is then the execution of a
 (software) Haskell program that generates the circuit, since statically sized
 structures are required for most hardware descriptions. In this case, the output
@@ -430,7 +431,7 @@ another painful Haskell experience.
 
 Moving away from simple FIR examples now, it is exciting to see a range of other
 standard DSP components that place similar (generally unmet) demands on existing
-HDLs. One other noteworthy wordlength example cannot even rely on synthesis
+HDLs. One other noteworthy word length example cannot even rely on synthesis
 tools to mask the rough approximations made with traditional HDLs --- Cascaded
 Integrator-Comb (CIC) decimators/integrators.
 
@@ -452,7 +453,7 @@ pruning technique is discussed. Equations are derived that describe the mean
 error and variance introduced by truncation at each stage. It is suggested that
 given a desired output word length, a legitimate design choice is to prune the
 word lengths of all previous stages as much as possible without accumulating an
-error greater than that introduced by the final rouding/truncation. This choice
+error greater than that introduced by the final rounding/truncation. This choice
 results in the following equation for the number of LSBs to discard at the
 $j^{th}$ stage.
 
@@ -555,7 +556,7 @@ TODO!
 
 There are common DSP circuits that clearly benefit from them
 
-\section*{Acknowledgment}
+\section*{Acknowledgement}
 
 The authors would like to thank Xilinx for supplying hardware and EDA tools for
 this project. We acknowledge funding for Craig Ramsay under EPSRC grant no.
