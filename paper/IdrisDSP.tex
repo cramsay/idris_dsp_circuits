@@ -48,6 +48,7 @@
 \lstset{style=mystyle}
 \usepackage{svg}
 
+\graphicspath{{./img/}}
 \begin{document}
 
 \title{On Applications of Dependent Types to Parameterised Digital Signal
@@ -178,9 +179,10 @@ As an introductory example, the consider a direct form Finite Impulse Response
 annotated, considering the worst-case for each arithmetic operation in
 isolation. 
 
-\begin{figure}
+\begin{figure}[htb]
   \centering
-  \includesvg{img/firworstcase}
+  %\includesvg{firworstcase}
+  \input{img/firworstcase.pdf_tex}
   \caption{A direct form FIR filter with worst-case growth along the adder chain}
   \label{fig:fir_direct}
 \end{figure}
@@ -441,9 +443,12 @@ stages, followed by a $\frac{1}{R}$-rate down-sampler, followed by $N$ comb
 stages with a differential delay of $M$. Figure \ref{fig:cic} shows an example
 CIC decimator with $R=8$, $N=3$ and $M=1$.
 
-\begin{figure}
+\begin{figure}[htb]
   \centering
-  \includegraphics[width=\linewidth]{img/cic_draft}
+  %\def\svgwidth{\columnwidth}
+  \resizebox{\columnwidth}{!}{
+    \input{img/cic_dec.pdf_tex}
+  }
   \caption{A CIC decimator without pruning. ($R=8$, $N=3$ and $M=1$)}
   \label{fig:cic}
 \end{figure}

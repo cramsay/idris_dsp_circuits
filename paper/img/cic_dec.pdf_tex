@@ -1,0 +1,94 @@
+%% Creator: Inkscape inkscape 0.92.5, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'cic_dec.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{300.47244094bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.33018868)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{cic_dec.pdf}}%
+    \put(0.9135617,0.13383167){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$+$\end{tabular}}}}%
+    \put(0.90607245,0.26208779){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$y_{[n]}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{cic_dec.pdf}}%
+    \put(0.85741655,0.05283284){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$z^{-1}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{cic_dec.pdf}}%
+    \put(0.77627743,0.13383167){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$+$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{cic_dec.pdf}}%
+    \put(0.7201325,0.05283284){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$z^{-1}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{cic_dec.pdf}}%
+    \put(0.63899361,0.13383167){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$+$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{cic_dec.pdf}}%
+    \put(0.58284867,0.05283284){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$z^{-1}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{cic_dec.pdf}}%
+    \put(0.48300596,0.13395489){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$\downarrow\! 8$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{cic_dec.pdf}}%
+    \put(0.77627743,0.13383167){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$+$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{cic_dec.pdf}}%
+    \put(0.38316302,0.05283284){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$z^{-1}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{cic_dec.pdf}}%
+    \put(0.32701809,0.13383167){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$+$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{cic_dec.pdf}}%
+    \put(0.25329428,0.05283284){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$z^{-1}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=12]{cic_dec.pdf}}%
+    \put(0.19714937,0.13383167){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$+$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=13]{cic_dec.pdf}}%
+    \put(0.12349875,0.05283284){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$z^{-1}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=14]{cic_dec.pdf}}%
+    \put(0.06735391,0.13383167){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$+$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{cic_dec.pdf}}%
+    \put(0.86863212,0.1921974){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$B_{\textrm{max}}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=16]{cic_dec.pdf}}%
+    \put(0.05990578,0.28205684){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$x_{[n]}$\end{tabular}}}}%
+    \put(0.02745683,0.23712734){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$B_{\textrm{in}}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=17]{cic_dec.pdf}}%
+    \put(0.01747256,0.19718991){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$B_{\textrm{max}}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=18]{cic_dec.pdf}}%
+  \end{picture}%
+\endgroup%

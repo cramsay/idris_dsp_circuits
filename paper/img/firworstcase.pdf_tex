@@ -1,0 +1,99 @@
+%% Creator: Inkscape inkscape 0.92.5, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'firworstcase.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{297.63779528bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.3047619)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{firworstcase.pdf}}%
+    \put(0.36789674,0.05388155){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $14$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{firworstcase.pdf}}%
+    \put(0.54680546,0.05388155){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $15$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{firworstcase.pdf}}%
+    \put(0.72319438,0.05388155){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $16$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{firworstcase.pdf}}%
+    \put(0.20034407,0.23069022){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$z^{-1}$\end{tabular}}}}%
+    \put(0.37673296,0.23069022){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$z^{-1}$\end{tabular}}}}%
+    \put(0.55312188,0.23069022){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$z^{-1}$\end{tabular}}}}%
+    \put(0.19669858,0.13931739){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$w_0$\end{tabular}}}}%
+    \put(0.10583339,0.13615926){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$\times$\end{tabular}}}}%
+    \put(0.15623009,0.15467529){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $5$\end{tabular}}}}%
+    \put(0.37308749,0.13931739){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$w_1$\end{tabular}}}}%
+    \put(0.2822222,0.13615926){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$\times$\end{tabular}}}}%
+    \put(0.332619,0.15467529){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $5$\end{tabular}}}}%
+    \put(0.54932534,0.13931739){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$w_2$\end{tabular}}}}%
+    \put(0.45846005,0.13615926){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$\times$\end{tabular}}}}%
+    \put(0.50885686,0.15467529){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $5$\end{tabular}}}}%
+    \put(0.72571418,0.13931739){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$w_3$\end{tabular}}}}%
+    \put(0.63484889,0.13615926){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$\times$\end{tabular}}}}%
+    \put(0.6852457,0.15467529){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $5$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{firworstcase.pdf}}%
+    \put(0.02519841,0.23572998){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$x_{[n]}$\end{tabular}}}}%
+    \put(0.13103172,0.2479094){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $8$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{firworstcase.pdf}}%
+    \put(0.30742057,0.2479094){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $8$\end{tabular}}}}%
+    \put(0.48380944,0.2479094){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $8$\end{tabular}}}}%
+    \put(0.6224007,0.2479094){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $8$\end{tabular}}}}%
+    \put(0.28224186,0.03527803){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$+$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{firworstcase.pdf}}%
+    \put(0.30739052,0.08915928){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $13$\end{tabular}}}}%
+    \put(0.45861104,0.03527803){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$+$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{firworstcase.pdf}}%
+    \put(0.48375971,0.08915928){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $13$\end{tabular}}}}%
+    \put(0.63499996,0.03527803){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$+$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=9]{firworstcase.pdf}}%
+    \put(0.66014862,0.08915928){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $13$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=10]{firworstcase.pdf}}%
+    \put(0.82017475,0.03876247){\color[rgb]{0,0,0}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}$y_{[n]}$\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=11]{firworstcase.pdf}}%
+    \put(0.13103174,0.08915928){\color[rgb]{0.65490196,0.6627451,0.6745098}\makebox(0,0)[t]{\lineheight{1.25}\smash{\begin{tabular}[t]{c}\small $13$\end{tabular}}}}%
+  \end{picture}%
+\endgroup%
