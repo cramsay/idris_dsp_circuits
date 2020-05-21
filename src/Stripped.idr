@@ -1,4 +1,7 @@
 import Data.Bits
+import Data.Vect
+
+%default total
 
 data Unsigned : (n : Nat) -> Type where
   U : Integer -> Unsigned n
@@ -82,14 +85,22 @@ constAddUB (UB x n) m = UB (x+m) (n+m)
 constMultUB : UBounded n -> (m: Nat) -> UBounded (n*m)
 constMultUB (UB x n) m = UB (x*m) (n*m)
 
-firProof : (n : Nat) -> (w: Nat) -> (ws : List Nat) ->
+-- So, the Vect implementation of Foldable kinda breaks my proof here...
+-- Let's redefine sum for now without using fold
+%hide sum
+sum :  Num a => Vect n a -> a
+sum [] = 0
+sum (x::xs) = x + sum xs
+
+firProof : (n : Nat) -> (w: Nat) -> (m : Nat) -> (ws : Vect m Nat) ->
            UBounded (n * (w + sum ws)) = UBounded (n * w + n * sum ws)
-firProof n w ws = rewrite multDistributesOverPlusRight n w (sum ws) in Refl
+firProof n w m ws = rewrite multDistributesOverPlusRight n w (sum ws) in Refl
 
 scaleUB : (n:Nat) -> (m:Nat) -> UBounded n -> UBounded m
-scaleUB n m (UB x n) = UB (x * m `div` n) m
+scaleUB Z m _ = zeros
+scaleUB (S n) m (UB x (S n)) = UB (x * m `div` (S n)) m
 
-streamCountFrom : Nat -> Stream Nat 
+streamCountFrom : Nat -> Stream Nat
 streamCountFrom n = n::streamCountFrom (n+1)
 
 simulate : (Stream a -> Stream b) -> Stream a -> Stream b
@@ -98,25 +109,26 @@ simulate f xs = f xs
 delay : a -> Stream a -> Stream a
 delay a s = a :: s
 
-window : Nat -> a -> Stream a -> Stream (List a)
-window k a xs = let dl = scanl (flip delay) xs (replicate k a)
-                in ?hlo
+window : (n : Nat) -> a -> Stream a -> Stream (Vect n a)
+window Z a xs     = pure []
+window (S k) a xs = let dl = scanl (flip delay) xs (replicate (k) a)
+                    in  sequence dl
 
---firCycle : (ws : List Nat) -> List (UBounded n) -> UBounded (n * sum ws)
---firCycle [] x = zeros
---firCycle {n} (w :: ws) (x :: xs) =
---  let result = addUB (constMultUB x w) (firCycle ws xs)
---  in rewrite firProof n w ws in result
---
---fir : (ws : List Nat) -> Stream (UBounded n) -> Stream (UBounded (n * sum ws))
---fir {n} ws x = map (firCycle ws) (window (length ws) x)
---
---main : IO ()
---main = do let y = take 5 $
---                  simulate (fir [1,1])
---                  (map (\a=>UB a 10) $ streamCountFrom 0)
---          putStrLn (show y)
---
+firCycle : (ws : Vect n Nat) -> Vect n (UBounded m) -> UBounded (m * sum ws)
+firCycle {n=Z} _ _ = zeros
+firCycle {n=S l} {m} (w :: ws) (x :: xs) =
+  let y = addUB (constMultUB x w) (firCycle ws xs)
+  in rewrite firProof m w l ws in y
+
+fir : (ws : Vect n Nat) -> Stream (UBounded m) -> Stream (UBounded (m * sum ws))
+fir {n} ws x = liftA (firCycle ws) (window n zeros x)
+
+main : IO ()
+main = do let y = take 5 $
+                  simulate (fir [1,1])
+                  (map (\a=>UB a 10) $ streamCountFrom 0)
+          putStrLn (show y)
+
 
 --firU : (ws : List Nat) -> Unsigned n -> Unsigned (maxToBits $ (bitsToMax n) * (sum ws))
 --firU ws x = toUnsigned . fir ws $ fromUnsigned x

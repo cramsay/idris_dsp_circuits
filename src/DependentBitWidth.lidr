@@ -191,6 +191,7 @@ holes where necessary to avoid specifying the output type.
 > firDisco x = let y = firU [1, 1, 1, 1] x in ?out_value
 
 Not we can inspect the holes and ask `Elab` to do some normalisation.
+TODO: Check if we can use :exec from the repl instead.
 
 ```
 *DependentBitWidth> :elab out_value
