@@ -207,11 +207,11 @@ integer of $n$ bits.
   \caption{Worst-case bit growth for binary arithmetic functions}
 \begin{lstlisting}[language=idris]
 mul : Unsigned n -> Unsigned m -> Unsigned (n+m)
-mul a b = a * b
+mul (U a) (U b) = U (a * b)
 
 add : Unsigned n -> Unsigned m
    -> Unsigned (max n m + 1)
-add a b = a + b
+add (U a) (U b) = U (a + b)
 \end{lstlisting}
 \label{lst:worst_arith}
 \end{codefig}
@@ -453,12 +453,12 @@ CIC decimator with $R=8$, $N=3$ and $M=1$.
   \label{fig:cic}
 \end{figure}
 
-In Hogenauer's original paper on CIC filters\cite{hogenauer_81}, a register
-pruning technique is discussed. Equations are derived that describe the mean
-error and variance introduced by truncation at each stage. It is suggested that
-given a desired output word length, a legitimate design choice is to prune the
-word lengths of all previous stages as much as possible without accumulating an
-error greater than that introduced by the final rounding/truncation. This choice
+A register pruning technique is discussed in Hogenauer's original paper on CIC
+filters\cite{hogenauer_81}. Equations are derived that describe the mean error
+and variance introduced by truncation at each stage. It is suggested that, given
+a desired output word length, a legitimate design choice is to prune the word
+lengths of all previous stages as much as possible without accumulating an error
+greater than that introduced by the final rounding/truncation. This choice
 results in the following equation for the number of LSBs to discard at the
 $j^{th}$ stage.
 
@@ -473,7 +473,7 @@ $N$ is the number of stages. Note that the first two terms have complex
 definitions of their own, including cases, sums, exponentials, and binomial
 coefficients\cite{hogenauer_81}.
 
-Because the pruned bits at each stage are contain information (we are discarding
+Because the pruned bits at each stage do contain information (we are discarding
 these within our own design constraints for error variance), synthesis tools
 cannot perform an equivalent optimisation given an un-pruned description. This
 section continues by demonstrating how dependent types are used to concisely
@@ -537,9 +537,9 @@ implementation is available at \cite{ramsay_20_gh}.
 While this is another example focusing on computing type-level word lengths,
 these techniques can be directly applied to many other type-level constructs ---
 including circuit topology. It is then only a small leap to apply these
-techniques to write type-safe descriptions other DSP circuits. For example,
-capturing the structural complexity in Multiple Constant Multiplier blocks, such
-as those described by the RAG-n algorithm\cite{dempster_95}.
+techniques to write type-safe descriptions of many other DSP circuits. For
+example, capturing the structural complexity in Multiple Constant Multiplier
+blocks, such as those described by the RAG-n algorithm\cite{dempster_95}.
 
 \subsection{Comparisons to existing HDLs}
 
