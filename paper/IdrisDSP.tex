@@ -557,9 +557,17 @@ and binomial coefficients) would prove to be a painful excursion.
 
 \section{Conclusions}
 
-TODO!
-
-There are common DSP circuits that clearly benefit from them
+This work has explored how languages with dependent types can be used to
+represent structures common to many DSP circuits. The best implementations of
+these structures to date have used ad-hoc software that, during its run-time,
+generates a circuit; rather than implementing a direct hardware description. We
+have shown that dependent types can be used to allow a compiler to check these
+structures, rather than suppressing bugs until run-time with a particular set of
+parameters. This method of hardware description greatly reduces the burden on
+the designer of reusable IP for evidence of testing, as many of the structural
+properties of a circuit can be guaranteed by their type. This is often
+implemented with no extra effort, and better still, using such specific types
+can even help guide complex implementations.
 
 \section*{Acknowledgement}
 
