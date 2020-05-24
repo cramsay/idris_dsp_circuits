@@ -146,13 +146,11 @@ circuits --- currently without circuit synthesis.
 
 In order to model simple circuit behaviour in Idris, a few choices must be considered. Namely,
 \begin{enumerate}
-\item \emph{How to best represent numeric types} --- \\A raw collection of bits, or
-  native integers? How should binary word lengths be encoded in the types?
-\item \emph{How to best model synchronous logic} --- \\Potentially infinite lists of
-  discrete-time samples? How do we ensure causality is preserved? Should
-  multiple clock domains be supported?
+\item How to best represent numeric types?
+\item How to best model synchronous logic?
 \end{enumerate}
 
+\cut{
 An intuitive solution to choice 1) is to expose only a type representing a
 single bit (an equivalent of VHDL's \texttt{std\_logic} type) and let the
 designer create their own abstractions on top of this, introducing any number of
@@ -165,6 +163,7 @@ be bit-presentable. An instance of this type class can be written for any
 custom type or, importantly, any existing Idris type. The reuse of existing
 types is a benefit over simply constructing new data types as collections of
 bits directly.
+}
 
 Choice 2) introduces a substantial level of complexity when considering circuit
 synthesis --- but much of this can be side-stepped when performing simulation
@@ -180,8 +179,10 @@ evaluation by default (unlike Haskell, the host language of
 \cite{gill_09,baaij_15}), lazy evaluation is still supported when operating on
 explicitly ``lazy'' types.
 
+\cut{
 A final nuance is that it is possible to describe a variety of non-synthesisable
 circuits using streams directly. For example:
+}
 
 \begin{itemize}
 \item Dropping an element from the stream describes a time advance, and is
@@ -199,9 +200,11 @@ elephant i (x :: xs) = i :: x :: elephant i xs
 \end{lstlisting}
 \end{itemize}
 
+\cut{
 These non-synthesisable descriptions can be precluded by hiding the Stream
 implementation and only exposing safe, hardware-friendly functions that operate
 on these streams --- such as \texttt{delay}, and an functor interface.
+}
 
 Before considering how Idris' dependent types enhance DSP circuit models, it is
 worth reiterating that, at the time of writing, this environment only simulates
@@ -215,10 +218,10 @@ overloading\cite{brady_12}.
 \label{sec:fir}
 
 % Talk about direct form FIR filters with diagram
-As an introductory example, the consider a direct form Finite Impulse Response
+As an introductory example, consider a direct form Finite Impulse Response
 (FIR) filter shown in Figure \ref{fig:fir_direct}. All word lengths have been
 annotated, considering the worst-case for each arithmetic operation in
-isolation. 
+isolation.
 
 \begin{figure}[htb]
   \centering
@@ -236,7 +239,7 @@ For this trivial example, the input is an 8-bit word, the coefficients are all
 5-bit words, and the adder chain produces a 16-bit output. For worst-case bit
 growth, the result of the multiplication of an $n$-bit word and an $m$-bit word
 is represented as an $[n+m]$-bit word, and the addition of an $n$-bit and an
-$m$-bit word is a $[Max(n,m)+1]$-bit word. This sort of growth can be captured
+$m$-bit word is a $[\text{Max}(n,m)+1]$-bit word. This sort of growth can be captured
 by VHDL designs using generics and \texttt{for generate} statements. (Note that
 there is no type inference, however, so the word length of every intermediate
 signal must be explicitly defined.). As an introduction to Idris' syntax we
@@ -257,7 +260,7 @@ add (U a) (U b) = U (a + b)
 \label{lst:worst_arith}
 \end{codefig}
 
-Each function has a type (after \texttt{:}), and an implementation (after \texttt{=}).
+Each function has a type (after ``\texttt{:}''), and an implementation (after ``\texttt{=}'').
 For clarity, the type of the multiplication function, \texttt{mul}, should be
 read as ``a function accepting arguments of type \texttt{Unsigned n} and
 \texttt{Unsigned m}, and returns a value of type \texttt{Unsigned (n+m)}''.
@@ -270,9 +273,9 @@ In the case of the FIR filter presented in Figure \ref{fig:fir_direct}, a circui
   number does not align with power of 2 limits. For example, $y$ in Figure
   \ref{fig:fir_direct} will only inhabit values within the range
   $[\![0,2^{14}-1]\!]$, despite its 16-bit annotation.
-\item Often the coefficients, $w_n$, will be constant. In this case the bit
-  growth due to multiplication should vary with the numerical value of each
-  constant coefficient.
+\item Often the coefficients will be constant. In this case the bit growth due
+  to multiplication should vary with the numerical value of each constant
+  coefficient.
 \end{enumerate}
 
 Improvement 2) is particularly relevant here, as its solution clearly demands a
@@ -285,7 +288,7 @@ used to compute a type (the output word length).
 % of dependent types! Value is lifted up to the type level and we do
 % calculations with it.
 
-Now consider how Idris can be applied to these challenges.
+Now we consider how Idris can be applied to these challenges.
 
 \subsection{An Idris Implementation}
 
@@ -418,8 +421,8 @@ Relying on synthesis tools to prune unused nets is often a valid choice,
 especially with simple example circuits. However, consider this filter example
 in the context of a real design. It is likely that the filter will be just one
 part of a larger chain of DSP circuits. At several points along the data path,
-the full precision signals will be shortened to avoid excessive resource
-usage. In this case, the designer employ multiple strategies:
+the full precision signals will be shortened to avoid excessive resource usage.
+In this case, the designer may employ multiple strategies:
 
 \begin{itemize}
 \item Truncation/rounding of the LSBs --- introducing some quantisation error
@@ -480,7 +483,7 @@ Integrator-Comb (CIC) decimators/integrators.
 
 CIC filters are often employed as a very low resource solution for digital
 decimation or interpolation. CIC decimators consist of a chain of $N$ integrator
-stages, followed by a $\frac{1}{R}$-rate down-sampler, followed by $N$ comb
+stages, followed by a $\frac{1}{R}$ rate downsampler, followed by $N$ comb
 stages with a differential delay of $M$. Figure \ref{fig:cic} shows an example
 CIC decimator with $R=8$, $N=3$ and $M=1$.
 
@@ -516,7 +519,7 @@ coefficients\cite{hogenauer_81}.
 
 Because the pruned bits at each stage do contain information (we are discarding
 these within our own design constraints for error variance), synthesis tools
-cannot perform an equivalent optimisation given an un-pruned description. This
+cannot perform an equivalent optimisation given an non-pruned description. This
 section continues by demonstrating how dependent types are used to concisely
 describe a fully parameterised, pruned CIC decimator. The conciseness is, in
 part, thanks to Idris having a single language that can be used at the
@@ -546,11 +549,11 @@ bj r n m bin bout j =
 
 As well as the stage parameter $j$, all CIC parameters are present: the rate
 change ($R$), the number of stages ($N$), the differential comb delay ($M$), and
-input/output word lengths. Another function \texttt{prunej} inverts
-\texttt{bj} to give the number of bits to retain, rather than discard. This
-function can now be lifted up to the type definition of a CIC decimator circuit
-to help the compiler confirm that each CIC stage is pruned to meet the error
-variance design constraint.
+input/output word lengths. Another function \texttt{prunej} inverts \texttt{bj}
+to give the number of bits to retain, rather than discard. This function can now
+be lifted up to the type definition of our CIC decimator circuit, letting the
+compiler confirm that each CIC stage is pruned to meet the error variance design
+constraint.
 
 \begin{codefig}[h]
   \caption{Type definitions for CIC decimator}
