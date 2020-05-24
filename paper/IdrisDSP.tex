@@ -1,4 +1,4 @@
-\documentclass[conference]{IEEEtran}
+\documentclass[conference,letterpaper]{IEEEtran}
 \IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote.
 % If that is unneeded, please comment it out.
@@ -14,6 +14,7 @@
 \usepackage[styles]{idrislang}
 
 \newcommand\todo[1]{\textcolor{red}{#1}}
+\newcommand\cut[1]{\textcolor{purple}{#1}}
 \usepackage{newfloat}
 \DeclareFloatingEnvironment[name={Listing}]{codefig}
 \usepackage{xcolor}
@@ -76,30 +77,70 @@ r.stewart@strath.ac.uk}
 
 \maketitle
 
+%% Write an abstract and then colourise parts I think I could remove.
 \begin{abstract}
-  We'll introduce Idris for EEE folks and show where there's a dependently typed
-  hole in most hardware description languages, and what sort of signal
-  processing circuits we can construct if we had such a language feature.
+
+  We explore the use of dependent types to address the disparity between the
+  theory and the practical description of many DSP circuits. After discussing an
+  approach to modeling synchronous circuit behaviour in Idris (a pure
+  functional language with dependent types) two DSP case studies are introduced
+  --- an FIR filter with optimal word lengths and a CIC decimator with register
+  pruning. Both of these scenarios prove difficult to describe in a
+  parameterised fashion using traditional HDLs. While some implementations
+  opt to use software programs to generate circuits, given a set of parameters,
+  this introduces its own difficulties during verification. Instead, this work
+  demonstrates that these circuits are readily described in an environment with
+  dependent types.
+
 \end{abstract}
 
-\begin{IEEEkeywords}
-dependent types, functional programming, Idris, digital signal processing, field programmable gate arrays  
-\end{IEEEkeywords}
+% \begin{IEEEkeywords}
+% dependent types, functional programming, Idris, digital signal processing, field programmable gate arrays  
+% \end{IEEEkeywords}
 
 \section{Introduction}
 
-Issues we see in describing DSP things generically. VHDL no good, so people used
-things like perl to generate vhdl in an unsafe way for ages. The essence of this
-technique has been continued with more feature rich HDLs, including those
-embedded in Haskell. These languages still rely on the execution of the
-designer's software program to generate hardware --- meaning structure and
-word lengths will be evaluated only when the program is called with a specific
-set of arguments. Testing is still a big burden here. It's also hard to gauge
-how well tested a 3rd party IP is... What if we could describe our circuits in
-such a way so the compiler can check the circuit structure and word lengths, even
-when these change in non-trivial ways with changes to the parameters?
+When describing digital signal processing (DSP) circuits, there is often a
+disparity between the mathematical theory and any practical descriptions in
+Hardware Description Languages (HDLs). HDLs such as VHDL and Verilog do not
+provide the language features required to fully parameterise some simple
+structures, such as direct-form Finite Impulse Response (FIR) filters with
+optimal word length growth.
 
-Dependent types can do this! What are those? Idris is a good shout.
+\cut{
+A consequence of this is that designers opt to either hand-craft an ad-hoc model
+for their particular parameters or turn to software programming, in an attempt
+to generate hardware descriptions in a fully parameterised way. Traditionally,
+Perl has been a common choice for such a task, however this offers extremely
+little in terms of static checking of the circuit generators --- placing a huge
+extra burden of testing on the designer. This can also be problematic for
+designers when evaluating $3^{\text{rd}}$ party IP; the evidence of testing is
+vital in the complete absence any of invariants checked by a compiler. This
+issue is even present in HDLs embedded in host languages with more expressive
+type systems, such as Lava\cite{gill_09}, hosted in Haskell.
+}
+
+This paper introduces pure, functional programming languages with dependent
+types as a solution to describing parameterised DSP circuits faithfully, and
+with structures verified at compile-time. Dependent types allow the \emph{type}
+of a program (in this case, encoding the structure of a circuit) to depend on
+the \emph{values} of its arguments, instead of just the argument types (i.e. the
+value of a coefficient, not just its word length). We use the language
+Idris\cite{brady_11} to make this demonstration of modeling/simulating DSP
+circuits --- currently without circuit synthesis.
+
+% Issues we see in describing DSP things generically. VHDL no good, so people used
+% things like perl to generate vhdl in an unsafe way for ages. The essence of this
+% technique has been continued with more feature rich HDLs, including those
+% embedded in Haskell. These languages still rely on the execution of the
+% designer's software program to generate hardware --- meaning structure and
+% word lengths will be evaluated only when the program is called with a specific
+% set of arguments. Testing is still a big burden here. It's also hard to gauge
+% how well tested a 3rd party IP is... What if we could describe our circuits in
+% such a way so the compiler can check the circuit structure and word lengths, even
+% when these change in non-trivial ways with changes to the parameters?
+% 
+% Dependent types can do this! What are those? Idris is a good shout.
 
 \section{Modelling synchronous circuits in Idris}
 
@@ -560,14 +601,14 @@ and binomial coefficients) would prove to be a painful excursion.
 This work has explored how languages with dependent types can be used to
 represent structures common to many DSP circuits. The best implementations of
 these structures to date have used ad-hoc software that, during its run-time,
-generates a circuit; rather than implementing a direct hardware description. We
+generates a circuit (rather than implementing a direct hardware description). We
 have shown that dependent types can be used to allow a compiler to check these
 structures, rather than suppressing bugs until run-time with a particular set of
 parameters. This method of hardware description greatly reduces the burden on
 the designer of reusable IP for evidence of testing, as many of the structural
 properties of a circuit can be guaranteed by their type. This is often
 implemented with no extra effort, and better still, using such specific types
-can even help guide complex implementations.
+can even help guide the implementation of complex structures.
 
 \section*{Acknowledgement}
 
