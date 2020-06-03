@@ -52,7 +52,15 @@ minus (U x) (U y) = U (x-y)
 ||| Helper function to prove that 2^n for all natural n is not 0
 private
 powerTwoIsNotZ : (n : Nat) -> Not (power 2 n = 0)
-powerTwoIsNotZ n = believe_me -- TODO prove properly
+powerTwoIsNotZ Z = SIsNotZ
+powerTwoIsNotZ (S k) = doubleNonZero (power 2 k) (powerTwoIsNotZ k)
+  where
+  doubleZero : (n : Nat) -> n + n = 0 -> n = 0
+  doubleZero Z Refl = Refl
+  doubleZero (S _) Refl impossible
+
+  doubleNonZero : (n : Nat) -> Not (n = 0) -> Not (2 * n = 0)
+  doubleNonZero n p = rewrite plusZeroRightNeutral n in (\q => p (doubleZero n q))
 
 ||| Add operations for two `Unsigned`s with wrapping overflow.
 addWrap : Unsigned n -> Unsigned n -> Unsigned n
