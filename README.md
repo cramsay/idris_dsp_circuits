@@ -1,6 +1,6 @@
 # On Applications of Dependent Types to Parameterised Digital Signal Processing Circuits
 
-The home of the source files accompanying the MWSCAS 2020 submission "On
+The home of the source files accompanying the MWSCAS 2021 submission "On
 Applications of Dependent Types to Parameterised Digital Signal Processing
 Circuits". We present an *experimental* circuit simulation library for Idrs, a
 lovely functional language with dependent types.
